@@ -3,7 +3,8 @@
         "publish": false
     },
     "github": {
-        "release": true
+        "release": true,
+        "assets": "dist/*.exe"
     },
-    "buildCommand": "npm run pkg & mv index.exe kola-launch-${src.tagName}.exe"
+    "buildCommand": "npm run pkg & rm dist/*.exe & mv index.exe dist/kola-launch-${version}.exe"
   }
