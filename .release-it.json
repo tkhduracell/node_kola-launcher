@@ -6,5 +6,5 @@
         "release": true,
         "assets": "dist/*.exe"
     },
-    "buildCommand": "npm run pkg & rm dist/*.exe & mv index.exe dist/kola-launch-${version}.exe"
+    "buildCommand": "npm run pkg & rm dist/*.exe & mv index.exe dist/kola-launcher-${version}.exe"
   }
