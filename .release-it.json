@@ -1,0 +1,9 @@
+{
+    "npm": {
+        "publish": false
+    },
+    "github": {
+        "release": true
+    },
+    "buildCommand": "npm run pkg & mv index.exe kola-launch-${src.tagName}.exe"
+  }

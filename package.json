@@ -1,0 +1,23 @@
+{
+  "name": "kola-launcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pkg": "pkg index.js --targets  node8-win-x64",
+    "release": "release-it minor"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dropbox": "^4.0.3",
+    "fs-extra": "^5.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "pkg": "^4.3.0",
+    "properties": "^1.2.1"
+  },
+  "devDependencies": {
+    "release-it": "^7.4.0"
+  }
+}

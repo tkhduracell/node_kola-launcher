@@ -1,0 +1,6 @@
+
+*.ini
+
+/node_modules/
+
+*.exe
