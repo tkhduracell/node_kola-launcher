@@ -7,13 +7,13 @@ const { fetch } = require('isomorphic-fetch')
 
 const example = properties.createStringifier ()
     .header("Settings for KOLA launcher")
-    
+
     .section({name: "dropbox"})
     .property({key: "token", value: "39384e957_56aa8d_90143", comment: "Secret code to be able to access yout dropbox"})
     .property({key: "location", value: "MyFolder/database.md5", comment: "The file to download from dropbox"})
-    
+
     .property({key: "destination", value: "C:\\Program Files (x86)\\Notepad++\\", comment: "Where to put the downloaded file" })
-    
+
     .section({name: "program"})
     .property({key: "location", value: "C:\\Program Files (x86)\\Notepad++\\notepad++.exe", comment: "The program to be launched after download of file"});
 
@@ -31,11 +31,11 @@ async function main() {
             await canWriteDestination(settings)
 
             await executeDownload(settings)
-                
+
             await launchProgram(settings)
- 
+
         } catch(error) {
-           console.error(error) 
+           console.error(error)
         }
     } else {
         await writeSettingsFile()
@@ -47,7 +47,7 @@ function readSettings(file) {
     return new Promise(function(resolve, reject) {
         properties.parse(file, { path: true, sections: true },  function (error, obj) {
             if (error) reject(error)
-            else resolve(obj) 
+            else resolve(obj)
         })
     })
 }
@@ -55,12 +55,11 @@ function readSettings(file) {
 
 async function executeDownload(settings) {
 
-    var dbx = new Dropbox({});
-    dbx.setAccessToken(settings.dropbox.token)
+    var dbx = new Dropbox({ accessToken: settings.dropbox.token });
 
-    const result = await dbx.filesDownload({path: settings.dropbox.location})
+    const response = await dbx.filesDownload({ path: settings.dropbox.location })
         .catch((error) => {
-            
+
             if (error.name === "FetchError") {
                 console.log("Unable to download file, please check your internet connection");
                 return false;
@@ -69,11 +68,12 @@ async function executeDownload(settings) {
             throw error;
         });
 
-    if (result) {
-        console.log("Downloading file:", result.name, " -> ", settings.dropbox.destination)
+    if (response) {
+        const { result } = response
+        console.log("Downloading file:", result.name, "( version", result.rev, ")", "->", settings.dropbox.destination)
 
         await fs.writeFile(settings.dropbox.destination, result.fileBinary, 'utf8')
-        
+
         console.log("File downloaded")
 
     }
@@ -86,13 +86,13 @@ async function canWriteDestination(settings) {
         .catch((err) => {
             throw new Error("Unable to write to file: " + file)
         });
-} 
+}
 
 async function launchProgram(settings) {
     const program = settings.program.location
 
     console.log("Starting process:", program)
-    
+
     const child = spawn(program, [], {
         detached: true, stdio: 'ignore'
     })
@@ -100,13 +100,13 @@ async function launchProgram(settings) {
     child.unref()
 
     console.log("This window will close in 2 seconds... ")
-    
+
     await sleep(2000)
 }
 
 async function writeSettingsFile() {
 
-    await new Promise(function(resolve, reject) { 
+    await new Promise(function(resolve, reject) {
         properties.stringify(example, {
             path: file
         }, resolve)
@@ -123,7 +123,7 @@ async function writeSettingsFile() {
 }
 
 function printFancyHeader() {
-    // http://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=KOLA%0ALAUNCHE  
+    // http://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=KOLA%0ALAUNCHE
     console.log(["",
         " ██╗  ██╗ ██████╗ ██╗      █████╗                                    ",
         " ██║ ██╔╝██╔═══██╗██║     ██╔══██╗                                   ",
@@ -143,7 +143,7 @@ function printFancyHeader() {
 }
 
 function sleep(ms) {
-    return new Promise(function(resolve, reject) { 
+    return new Promise(function(resolve, reject) {
         setTimeout(resolve, ms)
     })
 }
