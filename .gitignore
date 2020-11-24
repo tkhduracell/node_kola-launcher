@@ -5,3 +5,6 @@
 /dist
 
 /*.exe
+
+hello
+.env

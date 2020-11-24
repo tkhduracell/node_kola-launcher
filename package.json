@@ -18,6 +18,7 @@
     "properties": "^1.2.1"
   },
   "devDependencies": {
+    "dotenv-cli": "^4.0.0",
     "release-it": "^7.4.0"
   }
 }
