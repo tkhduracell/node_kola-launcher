@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pkg": "pkg index.js --targets  node8-win-x64",
-    "release": "release-it minor"
+    "release": "dotenv release-it minor"
   },
   "author": "",
   "license": "ISC",
